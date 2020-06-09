@@ -19,10 +19,10 @@ import (
 	"reflect"
 	"testing"
 
-	tb "github.com/tektoncd/pipeline/internal/builder/v1beta1"
+	tb "github.com/tektoncd/pipeline/test/builder"
 	"knative.dev/pkg/apis"
 
-	pipelinev1 "github.com/tektoncd/pipeline/pkg/apis/pipeline/v1beta1"
+	pipelinev1 "github.com/tektoncd/pipeline/pkg/apis/pipeline/v1alpha1"
 	resource "github.com/tektoncd/pipeline/pkg/apis/resource/v1alpha1"
 )
 

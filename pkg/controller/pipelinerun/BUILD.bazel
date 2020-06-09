@@ -17,7 +17,7 @@ go_library(
     deps = [
         "@com_github_jenkins_x_go_scm//scm:go_default_library",
         "@com_github_jenkins_x_go_scm//scm/driver/github:go_default_library",
-        "@com_github_tektoncd_pipeline//pkg/apis/pipeline/v1beta1:go_default_library",
+        "@com_github_tektoncd_pipeline//pkg/apis/pipeline/v1alpha1:go_default_library",
         "@com_github_tektoncd_pipeline//pkg/apis/resource/v1alpha1:go_default_library",
         "@dev_knative_pkg//apis:go_default_library",
         "@io_k8s_api//core/v1:go_default_library",
@@ -49,8 +49,7 @@ go_test(
     deps = [
         "@com_github_jenkins_x_go_scm//scm:go_default_library",
         "@com_github_jenkins_x_go_scm//scm/driver/fake:go_default_library",
-        "@com_github_tektoncd_pipeline//internal/builder/v1beta1:go_default_library",
-        "@com_github_tektoncd_pipeline//pkg/apis/pipeline/v1beta1:go_default_library",
+        "@com_github_tektoncd_pipeline//pkg/apis/pipeline/v1alpha1:go_default_library",
         "@com_github_tektoncd_pipeline//pkg/apis/resource/v1alpha1:go_default_library",
         "@com_github_tektoncd_pipeline//test/builder:go_default_library",
         "@dev_knative_pkg//apis:go_default_library",

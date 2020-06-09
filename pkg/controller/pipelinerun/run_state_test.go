@@ -20,7 +20,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	"knative.dev/pkg/apis"
 
-	pipelinev1 "github.com/tektoncd/pipeline/pkg/apis/pipeline/v1beta1"
+	pipelinev1 "github.com/tektoncd/pipeline/pkg/apis/pipeline/v1alpha1"
 	tb "github.com/tektoncd/pipeline/test/builder"
 )
 
@@ -44,11 +44,8 @@ func TestGetPipelineRunState(t *testing.T) {
 }
 
 func makePipelineRunWithCondition(s apis.ConditionType, c corev1.ConditionStatus) *pipelinev1.PipelineRun {
-	return tb.PipelineRun(pipelineRunName, testNamespace, tb.PipelineRunSpec(
-		"tomatoes",
-	), tb.PipelineRunStatus(tb.PipelineRunStatusCondition(
-		apis.Condition{Type: s, Status: c}),
-		tb.PipelineRunTaskRunsStatus("trname", &pipelinev1.PipelineRunTaskRunStatus{
-			PipelineTaskName: "task-1",
-		})))
+	return tb.PipelineRun(pipelineRunName,
+		tb.PipelineRunNamespace(testNamespace), tb.PipelineRunSpec("tomatoes"),
+		tb.PipelineRunStatus(tb.PipelineRunStatusCondition(apis.Condition{Type: s, Status: c}),
+			tb.PipelineRunTaskRunsStatus("trname", &pipelinev1.PipelineRunTaskRunStatus{PipelineTaskName: "task-1"})))
 }

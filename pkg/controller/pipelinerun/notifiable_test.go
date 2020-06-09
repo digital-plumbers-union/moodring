@@ -33,7 +33,8 @@ func TestIsNotifiablePipelineRun(t *testing.T) {
 	}
 
 	for _, tt := range nt {
-		r := tb.PipelineRun("test-pipeline-run-with-labels", "foo", tt.opts...)
+		ops := append(tt.opts, tb.PipelineRunNamespace("foo"))
+		r := tb.PipelineRun("test-pipeline-run-with-labels", ops...)
 		if b := isNotifiablePipelineRun(r); b != tt.want {
 			t.Errorf("IsNotifiablePipelineRun() %s got %v, want %v", tt.name, b, tt.want)
 		}

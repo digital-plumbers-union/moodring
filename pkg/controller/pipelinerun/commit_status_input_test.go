@@ -36,7 +36,8 @@ func TestAnnotationByName(t *testing.T) {
 	}
 
 	for _, tt := range nt {
-		r := tb.PipelineRun("test-pipeline-run-with-labels", "foo", tt.opts...)
+		ops := append(tt.opts, tb.PipelineRunNamespace("foo"))
+		r := tb.PipelineRun("test-pipeline-run-with-labels", ops...)
 		if b := getAnnotationByName(r, statusContextName, "default"); b != tt.want {
 			t.Errorf("Context() %s got %v, want %v", tt.name, b, tt.want)
 		}

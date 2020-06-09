@@ -19,7 +19,7 @@ import (
 	"net/url"
 	"strings"
 
-	pipelinev1 "github.com/tektoncd/pipeline/pkg/apis/pipeline/v1beta1"
+	pipelinev1 "github.com/tektoncd/pipeline/pkg/apis/pipeline/v1alpha1"
 	resource "github.com/tektoncd/pipeline/pkg/apis/resource/v1alpha1"
 )
 
