@@ -1,0 +1,19 @@
+# helps gazelle generate appropriate importpaths based on our go.mod file
+# NOTE: IF YOU CHANGE ONE, YOU SHOULD CHANGE THE OTHER
+# gazelle:prefix github.com/digital-plumbers-union/tekton-commit-status-tracker
+load("@com_github_bazelbuild_buildtools//buildifier:def.bzl", "buildifier")
+load("@bazel_gazelle//:def.bzl", "gazelle")
+
+# BUILD file linter/formatter
+buildifier(
+    name = "buildifier",
+)
+
+# invoke buildifier in check mode to fail during CI
+buildifier(
+    name = "buildifier-check",
+    mode = "check",
+)
+
+# automatically generates BUILD files for go projects
+gazelle(name = "gazelle")

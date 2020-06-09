@@ -1,0 +1,15 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "add_pipelinerun.go",
+        "controller.go",
+    ],
+    importpath = "github.com/digital-plumbers-union/tekton-commit-status-tracker/pkg/controller",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//pkg/controller/pipelinerun:go_default_library",
+        "@io_k8s_sigs_controller_runtime//pkg/manager:go_default_library",
+    ],
+)

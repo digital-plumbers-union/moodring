@@ -1,0 +1,26 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = ["main.go"],
+    importpath = "github.com/digital-plumbers-union/tekton-commit-status-tracker/cmd/manager",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//pkg/controller:go_default_library",
+        "//version:go_default_library",
+        "@com_github_spf13_pflag//:go_default_library",
+        "@com_github_tektoncd_pipeline//pkg/apis/pipeline/v1beta1:go_default_library",
+        "@io_k8s_client_go//plugin/pkg/client/auth:go_default_library",
+        "@io_k8s_sigs_controller_runtime//pkg/client/config:go_default_library",
+        "@io_k8s_sigs_controller_runtime//pkg/log:go_default_library",
+        "@io_k8s_sigs_controller_runtime//pkg/log/zap:go_default_library",
+        "@io_k8s_sigs_controller_runtime//pkg/manager:go_default_library",
+        "@io_k8s_sigs_controller_runtime//pkg/manager/signals:go_default_library",
+    ],
+)
+
+go_binary(
+    name = "manager",
+    embed = [":go_default_library"],
+    visibility = ["//visibility:public"],
+)
