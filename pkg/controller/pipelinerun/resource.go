@@ -49,22 +49,22 @@ func findGitResource(p *pipelinev1.PipelineRun) (*resource.PipelineResourceSpec,
 
 // TODO This only parses GitHub repo paths, would need work to parse GitLab repo
 // paths too (can have more components).
-func getRepoAndSHA(p *resource.PipelineResourceSpec) (string, string, error) {
+func getRepoAndSHAFromResource(p *resource.PipelineResourceSpec) (string, string, error) {
 	if p.Type != pipelinev1.PipelineResourceTypeGit {
 		return "", "", fmt.Errorf("failed to get repo and SHA from non-git resource: %s", p)
 	}
 	u, err := getResourceParamByName(p.Params, "url")
 	if err != nil {
-		return "", "", fmt.Errorf("failed to find param url in getRepoAndSHA: %w", err)
+		return "", "", fmt.Errorf("failed to find param url in getRepoAndSHAFromResource: %w", err)
 	}
 
 	rev, err := getResourceParamByName(p.Params, "revision")
 	if err != nil {
-		return "", "", fmt.Errorf("failed to find param revision in getRepoAndSHA: %w", err)
+		return "", "", fmt.Errorf("failed to find param revision in getRepoAndSHAFromResource: %w", err)
 	}
 	repo, err := extractRepoFromGitHubURL(u)
 	if err != nil {
-		return "", "", fmt.Errorf("getRepoAndSHA failed: %w", err)
+		return "", "", fmt.Errorf("getRepoAndSHAFromResource failed: %w", err)
 	}
 
 	return strings.TrimSuffix(repo, ".git"), rev, nil

@@ -94,15 +94,25 @@ func (r *ReconcilePipelineRun) Reconcile(request reconcile.Request) (reconcile.R
 		return reconcile.Result{}, nil
 	}
 
+	var repo string
+	var sha string
+
 	res, err := findGitResource(pipelineRun)
 	if err != nil {
-		reqLogger.Error(err, "failed to find a git resource")
-		return reconcile.Result{}, nil
+		reqLogger.Info("failed to find a git resource")
 	}
-	repo, sha, err := getRepoAndSHA(res)
-	if err != nil {
-		reqLogger.Error(err, "failed to parse the URL and SHA correctly")
-		return reconcile.Result{}, nil
+	if res != nil {
+		repo, sha, err = getRepoAndSHAFromResource(res)
+		if err != nil {
+			reqLogger.Error(err, "failed to parse the URL and SHA from git resource")
+			return reconcile.Result{}, nil
+		}
+	} else {
+		repo, sha, err = getRepoAndSHAFromAnnotations(pipelineRun.ObjectMeta)
+		if err != nil {
+			reqLogger.Error(err, "failed to parse the URL and SHA from annotations")
+			return reconcile.Result{}, nil
+		}
 	}
 
 	key := keyForCommit(repo, sha)

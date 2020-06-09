@@ -14,11 +14,31 @@
 
 package pipelinerun
 
-const (
-	notifiableName        = "tekton.dev/git-status"
-	statusContextName     = "tekton.dev/status-context"
-	statusTargetURLName   = "tekton.dev/status-target-url"
-	statusDescriptionName = "tekton.dev/status-description"
-	commit                = "tekton.dev/commit-to-update"
-	repo                  = "tekton.dev/repo-to-update"
+import (
+	"fmt"
+	"strings"
+
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
+
+const (
+	notifiableName        string = "moodring.dpu.sh/git-status"
+	statusContextName     string = "moodring.dpu.sh/status-context"
+	statusTargetURLName   string = "moodring.dpu.sh/status-target-url"
+	statusDescriptionName string = "moodring.dpu.sh/status-description"
+	revisionName          string = "moodring.dpu.sh/commit"
+	repoName              string = "moodring.dpu.sh/repo"
+)
+
+func getRepoAndSHAFromAnnotations(m metav1.ObjectMeta) (string, string, error) {
+	// check for annotations
+	if !(metav1.HasAnnotation(m, repoName) && metav1.HasAnnotation(m, revisionName)) {
+		return "", "", fmt.Errorf("Annotations not present: %s and %s are required", repoName, revisionName)
+	}
+	repo, err := extractRepoFromGitHubURL(m.Annotations[repoName])
+	if err != nil {
+		return "", "", fmt.Errorf("getRepoAndSHAFromAnnotations failed: %w", err)
+	}
+
+	return strings.TrimSuffix(repo, ".git"), m.Annotations[revisionName], nil
+}

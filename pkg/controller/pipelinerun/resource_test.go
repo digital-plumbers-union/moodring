@@ -83,7 +83,7 @@ func TestFindGitResourceWithNonGitResource(t *testing.T) {
 	}
 }
 
-func TestGetRepoAndSHA(t *testing.T) {
+func TestgetRepoAndSHAFromResource(t *testing.T) {
 	repoURL := "https://example.com/test/repo"
 	resourceTests := []struct {
 		name     string
@@ -104,18 +104,18 @@ func TestGetRepoAndSHA(t *testing.T) {
 	for _, tt := range resourceTests {
 		res := makePipelineResource(tt.resType, tt.url, tt.revision)
 
-		repo, sha, err := getRepoAndSHA(res)
+		repo, sha, err := getRepoAndSHAFromResource(res)
 		if !matchError(t, tt.wantErr, err) {
-			t.Errorf("getRepoAndSHA() %s: got error %v, want %s", tt.name, err, tt.wantErr)
+			t.Errorf("getRepoAndSHAFromResource() %s: got error %v, want %s", tt.name, err, tt.wantErr)
 			continue
 		}
 
 		if tt.repo != repo {
-			t.Errorf("getRepoAndSHA() %s: got repo %s, want %s", tt.name, repo, tt.repo)
+			t.Errorf("getRepoAndSHAFromResource() %s: got repo %s, want %s", tt.name, repo, tt.repo)
 		}
 
 		if tt.sha != sha {
-			t.Errorf("getRepoAndSHA() %s: got SHA %s, want %s", tt.name, sha, tt.sha)
+			t.Errorf("getRepoAndSHAFromResource() %s: got SHA %s, want %s", tt.name, sha, tt.sha)
 		}
 	}
 }
@@ -140,7 +140,7 @@ func TestExtractRepoFromGitHubURL(t *testing.T) {
 		}
 
 		if tt.repo != repo {
-			t.Errorf("getRepoAndSHA() %s: got repo %s, want %s", tt.name, repo, tt.repo)
+			t.Errorf("getRepoAndSHAFromResource() %s: got repo %s, want %s", tt.name, repo, tt.repo)
 		}
 	}
 }
