@@ -22,9 +22,11 @@
 build: gazelle
   bazel build //...
 
+# update BUILD files & test
 test: gazelle
   bazel test //...
 
+# update BUILD files
 gazelle:
   bazel run //:gazelle
 
@@ -37,6 +39,6 @@ update-go-deps:
 check:
   bazel run //:buildifier-check
 
-# run prettier.  THIS WILL UPDATE YO FILES, MAN, SO BE AWARES.
+# run formatting/style updates that can be automated
 fix:
   bazel run //:buildifier

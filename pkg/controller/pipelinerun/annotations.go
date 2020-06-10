@@ -26,19 +26,19 @@ const (
 	statusContextName     string = "moodring.dpu.sh/status-context"
 	statusTargetURLName   string = "moodring.dpu.sh/status-target-url"
 	statusDescriptionName string = "moodring.dpu.sh/status-description"
-	revisionName          string = "moodring.dpu.sh/commit"
+	shaName               string = "moodring.dpu.sh/sha"
 	repoName              string = "moodring.dpu.sh/repo"
 )
 
 func getRepoAndSHAFromAnnotations(m metav1.ObjectMeta) (string, string, error) {
 	// check for annotations
-	if !(metav1.HasAnnotation(m, repoName) && metav1.HasAnnotation(m, revisionName)) {
-		return "", "", fmt.Errorf("Annotations not present: %s and %s are required", repoName, revisionName)
+	if !(metav1.HasAnnotation(m, repoName) && metav1.HasAnnotation(m, shaName)) {
+		return "", "", fmt.Errorf("Annotations not present: %s and %s are required", repoName, shaName)
 	}
 	repo, err := extractRepoFromGitHubURL(m.Annotations[repoName])
 	if err != nil {
 		return "", "", fmt.Errorf("getRepoAndSHAFromAnnotations failed: %w", err)
 	}
 
-	return strings.TrimSuffix(repo, ".git"), m.Annotations[revisionName], nil
+	return strings.TrimSuffix(repo, ".git"), m.Annotations[shaName], nil
 }
