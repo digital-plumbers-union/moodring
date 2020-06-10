@@ -30,6 +30,13 @@ test: gazelle
 gazelle:
   bazel run //:gazelle
 
+# runs as container
+run-container:
+  bazel run --platforms=@io_bazel_rules_go//go/toolchain:linux_amd64 //cmd:container
+
+# publish container to docker hub
+publish-container:
+  bazel run --platforms=@io_bazel_rules_go//go/toolchain:linux_amd64 //cmd:container-push
 
 # update external go deps in bazel
 update-go-deps:
