@@ -24,8 +24,8 @@ import (
 )
 
 const (
-	// TODO: what should these be called?
-	secretName = "commit-status-tracker-git-secret"
+	// TODO: make configurable
+	secretName = "moodring-git-secret"
 	secretID   = "token"
 )
 
@@ -48,5 +48,4 @@ func getNamespaceSecretName(s string) types.NamespacedName {
 		Namespace: s,
 		Name:      secretName,
 	}
-
 }

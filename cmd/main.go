@@ -48,9 +48,12 @@ func printVersion() {
 	log.Info(fmt.Sprintf("Operator Version: %s", version.Version))
 	log.Info(fmt.Sprintf("Go Version: %s", runtime.Version()))
 	log.Info(fmt.Sprintf("Go OS/Arch: %s/%s", runtime.GOOS, runtime.GOARCH))
+	log.Info(fmt.Sprintf("Git Base URL: %s", os.Getenv("GIT_BASE_URL")))
 }
 
 func main() {
+	// Add flag for Git API Base URL
+	pflag.String("git-base-url", "", "base URL for git API to use")
 	// Add flags registered by imported packages (e.g. glog and
 	// controller-runtime)
 	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)

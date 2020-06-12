@@ -113,6 +113,7 @@ func (r *ReconcilePipelineRun) Reconcile(request reconcile.Request) (reconcile.R
 			reqLogger.Error(err, "failed to parse the URL and SHA from annotations")
 			return reconcile.Result{}, nil
 		}
+		reqLogger.Info("parsed repo and sha from annotations")
 	}
 
 	key := keyForCommit(repo, sha)

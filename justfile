@@ -36,7 +36,7 @@ run-container:
 
 # publish container to docker hub
 publish-container:
-  bazel run --platforms=@io_bazel_rules_go//go/toolchain:linux_amd64 //cmd:container-push
+  bazel run --platforms=@io_bazel_rules_go//go/toolchain:linux_amd64 //cmd:push-container
 
 # update external go deps in bazel
 update-go-deps:

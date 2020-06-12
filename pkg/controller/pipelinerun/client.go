@@ -16,6 +16,7 @@ package pipelinerun
 
 import (
 	"context"
+	"os"
 
 	"github.com/jenkins-x/go-scm/scm"
 	"github.com/jenkins-x/go-scm/scm/driver/github"
@@ -24,9 +25,16 @@ import (
 
 type scmClientFactory func(string) *scm.Client
 
-// TODO: fix this to determine the type of scm Client to create.
 func createClient(token string) *scm.Client {
-	client := github.NewDefault()
+	var client *scm.Client
+	baseURL, exists := os.LookupEnv("GIT_BASE_URL")
+	if !exists {
+		client = github.NewDefault()
+	} else {
+		// ignore error because it can only error when parsing graphql api
+		// which we dont do
+		client, _ = github.New(baseURL)
+	}
 	ts := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: token},
 	)
