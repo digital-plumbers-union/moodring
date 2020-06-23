@@ -44,8 +44,8 @@ func Add(mgr manager.Manager) error {
 type pipelineRunTracker map[string]State
 
 // newReconciler returns a new reconcile.Reconciler
-func newReconciler(mgr manager.Manager) reconcile.Reconciler {
-	return &ReconcilePipelineRun{client: mgr.GetClient(), scheme: mgr.GetScheme(), scmFactory: createClient, pipelineRuns: make(pipelineRunTracker)}
+func newReconciler(mgr manager.Manager, gitBaseURL string) reconcile.Reconciler {
+	return &ReconcilePipelineRun{client: mgr.GetClient(), scheme: mgr.GetScheme(), gitBaseURL: gitBaseURL, scmFactory: createClient, pipelineRuns: make(pipelineRunTracker)}
 }
 
 // add adds a new Controller to mgr with r as the reconcile.Reconciler
@@ -67,6 +67,7 @@ type ReconcilePipelineRun struct {
 	// This client, initialized using mgr.Client() above, is a split client
 	// that reads objects from the cache and writes to the apiserver
 	client       client.Client
+	gitBaseURL   string
 	scheme       *runtime.Scheme
 	scmFactory   scmClientFactory
 	pipelineRuns pipelineRunTracker

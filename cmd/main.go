@@ -22,6 +22,7 @@ import (
 
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
 
+	"github.com/peterbourgon/ff"
 	"github.com/spf13/pflag"
 	pipelinev1 "github.com/tektoncd/pipeline/pkg/apis/pipeline/v1alpha1"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
@@ -35,29 +36,34 @@ import (
 )
 
 // Change below variables to serve metrics on different host or port.
-var (
-	metricsHost               = "0.0.0.0"
-	metricsPort         int32 = 8383
-	operatorMetricsPort int32 = 8686
-	port                      = 9443
-	namespace                 = os.Getenv("WATCH_NAMESPACE")
-)
+var ()
 var log = logf.Log.WithName("cmd")
 
 func printVersion() {
 	log.Info(fmt.Sprintf("Operator Version: %s", version.Version))
 	log.Info(fmt.Sprintf("Go Version: %s", runtime.Version()))
 	log.Info(fmt.Sprintf("Go OS/Arch: %s/%s", runtime.GOOS, runtime.GOARCH))
-	log.Info(fmt.Sprintf("Git Base URL: %s", os.Getenv("GIT_BASE_URL")))
 }
 
 func main() {
-	// Add flag for Git API Base URL
-	pflag.String("git-base-url", "", "base URL for git API to use")
+	fs := flag.NewFlagSet("moodring", flag.ExitOnError)
+	// Controller configuration
+	var (
+		gitBaseURL        = fs.String("git-base-url", "https://api.github.com", "base URL for git API to use")
+		metricsHost       = fs.String("metrics-host", "0.0.0.0", "address to serve metrics on")
+		metricsPort int32 = fs.Int("metrics-port", 8383, "port to serve metrics on")
+		port              = fs.Int("port", 9443)
+		namespace         = fs.String("watch-namespace", "", "namespace to watch for pipeline runs")
+
+		// Move rest of var declared above, check rest of files for config
+	)
+
 	// Add flags registered by imported packages (e.g. glog and
 	// controller-runtime)
+	fs.CommandLine.AddGoFlagSet(flag.CommandLine)
+
 	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
-	pflag.Parse()
+	ff.Parse(fs, os.Args[1:], ff.WithEnvVarNoPrefix())
 
 	// Use a zap logr.Logger implementation. If none of the zap
 	// flags are configured (or if the zap flag set is not being
@@ -95,6 +101,10 @@ func main() {
 		os.Exit(1)
 	}
 
+	// replace this with a direct invocation to controller.New ?
+	// c, err := controller.New("foo-controller", mgr, controller.Options{
+	// 	Reconciler: &reconcileReplicaSet{client: mgr.GetClient(), log: log.WithName("reconciler")},
+	// })
 	if err := controller.AddToManager(mgr); err != nil {
 		log.Error(err, "Unable to register controller")
 		os.Exit(1)
