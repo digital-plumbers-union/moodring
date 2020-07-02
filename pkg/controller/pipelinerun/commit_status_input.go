@@ -53,6 +53,8 @@ func convertState(s State) scm.State {
 		return scm.StatePending
 	case Successful:
 		return scm.StateSuccess
+	case Cancelled:
+		return scm.StateUnknown
 	default:
 		return scm.StateUnknown
 	}

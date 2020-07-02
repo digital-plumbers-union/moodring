@@ -28,24 +28,28 @@ func TestGetPipelineRunState(t *testing.T) {
 	statusTests := []struct {
 		conditionType   apis.ConditionType
 		conditionStatus corev1.ConditionStatus
+		reason          string
 		want            State
 	}{
-		{apis.ConditionSucceeded, corev1.ConditionTrue, Successful},
-		{apis.ConditionSucceeded, corev1.ConditionUnknown, Pending},
-		{apis.ConditionSucceeded, corev1.ConditionFalse, Failed},
+		{apis.ConditionSucceeded, corev1.ConditionTrue, "Succeeded", Successful},
+		{apis.ConditionSucceeded, corev1.ConditionUnknown, "Running", Pending},
+		{apis.ConditionSucceeded, corev1.ConditionFalse, "Failed", Failed},
+		{apis.ConditionSucceeded, corev1.ConditionFalse, pipelinev1.PipelineRunSpecStatusCancelled, Cancelled},
+		{apis.ConditionSucceeded, corev1.ConditionUnknown, pipelinev1.PipelineRunSpecStatusCancelled, Cancelled},
 	}
 
 	for _, tt := range statusTests {
-		s := getPipelineRunState(makePipelineRunWithCondition(tt.conditionType, tt.conditionStatus))
+		s := getPipelineRunState(makePipelineRunWithCondition(tt.conditionType, tt.conditionStatus, tt.reason))
 		if s != tt.want {
 			t.Errorf("getPipelineRunState(%s) got %v, want %v", tt.conditionStatus, s, tt.want)
 		}
 	}
 }
 
-func makePipelineRunWithCondition(s apis.ConditionType, c corev1.ConditionStatus) *pipelinev1.PipelineRun {
+// TODO: use non-string type for Reason, seems its not exposed on v1alpha1
+func makePipelineRunWithCondition(s apis.ConditionType, c corev1.ConditionStatus, r string) *pipelinev1.PipelineRun {
 	return tb.PipelineRun(pipelineRunName,
 		tb.PipelineRunNamespace(testNamespace), tb.PipelineRunSpec("tomatoes"),
-		tb.PipelineRunStatus(tb.PipelineRunStatusCondition(apis.Condition{Type: s, Status: c}),
+		tb.PipelineRunStatus(tb.PipelineRunStatusCondition(apis.Condition{Type: s, Status: c, Reason: r}),
 			tb.PipelineRunTaskRunsStatus("trname", &pipelinev1.PipelineRunTaskRunStatus{PipelineTaskName: "task-1"})))
 }
