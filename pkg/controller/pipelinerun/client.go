@@ -16,25 +16,19 @@ package pipelinerun
 
 import (
 	"context"
-	"os"
 
 	"github.com/jenkins-x/go-scm/scm"
 	"github.com/jenkins-x/go-scm/scm/driver/github"
 	"golang.org/x/oauth2"
 )
 
-type scmClientFactory func(string) *scm.Client
+type scmClientFactory func(string, string) *scm.Client
 
-func createClient(token string) *scm.Client {
-	var client *scm.Client
-	baseURL, exists := os.LookupEnv("GIT_BASE_URL")
-	if !exists {
-		client = github.NewDefault()
-	} else {
-		// ignore error because it can only error when parsing graphql api
-		// which we dont do
-		client, _ = github.New(baseURL)
-	}
+func createClient(token string, baseURL string) *scm.Client {
+	// ignore error because it can only error when parsing graphql api
+	// which we dont do
+	client, _ := github.New(baseURL)
+
 	ts := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: token},
 	)

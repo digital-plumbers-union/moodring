@@ -354,7 +354,7 @@ func makeReconciler(pr *pipelinev1.PipelineRun, objs ...runtime.Object) (*Reconc
 	s.AddKnownTypes(pipelinev1.SchemeGroupVersion, pr)
 	cl := fake.NewFakeClient(objs...)
 	client, data := fakescm.NewDefault()
-	fakeClientFactory := func(s string) *scm.Client {
+	fakeClientFactory := func(s string, s2 string) *scm.Client {
 		return client
 	}
 	return &ReconcilePipelineRun{

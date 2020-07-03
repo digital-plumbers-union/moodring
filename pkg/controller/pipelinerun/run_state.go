@@ -29,6 +29,7 @@ const (
 	Failed
 	Successful
 	Error
+	Cancelled
 )
 
 func (s State) String() string {
@@ -36,7 +37,9 @@ func (s State) String() string {
 		"Pending",
 		"Failed",
 		"Successful",
-		"Error"}
+		"Error",
+		"Cancelled",
+	}
 	return names[s]
 }
 
@@ -49,12 +52,19 @@ func getPipelineRunState(p *pipelinev1.PipelineRun) State {
 	for _, c := range p.Status.Conditions {
 		if c.Type == apis.ConditionSucceeded {
 			switch c.Status {
-			case
-				corev1.ConditionFalse:
+			case corev1.ConditionFalse:
+				if c.Reason == pipelinev1.PipelineRunSpecStatusCancelled {
+					return Cancelled
+				}
 				return Failed
 			case corev1.ConditionTrue:
 				return Successful
 			case corev1.ConditionUnknown:
+				// ConditionUnknown can represent Cancelled, per
+				// https://github.com/tektoncd/pipeline/blob/master/pkg/apis/pipeline/v1beta1/pipelinerun_types.go#L230
+				if c.Reason == pipelinev1.PipelineRunSpecStatusCancelled {
+					return Cancelled
+				}
 				return Pending
 			}
 		}

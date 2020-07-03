@@ -15,23 +15,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: commit-status-tracker
+  name: moodring
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: commit-status-tracker
+      name: moodring
   template:
     metadata:
       labels:
-        name: commit-status-tracker
+        name: moodring
     spec:
-      serviceAccountName: commit-status-tracker
+      serviceAccountName: moodring
       containers:
-        - name: commit-status-tracker
+        - name: moodring
           image: REPLACE_IMAGE
-          command:
-          - commit-status-tracker
           imagePullPolicy: Always
           env:
             - name: WATCH_NAMESPACE
@@ -43,4 +41,4 @@ spec:
                 fieldRef:
                   fieldPath: metadata.name
             - name: OPERATOR_NAME
-              value: "commit-status-tracker"
+              value: "moodring"

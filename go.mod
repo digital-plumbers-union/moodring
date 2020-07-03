@@ -4,7 +4,7 @@ go 1.13
 
 require (
 	github.com/jenkins-x/go-scm v1.5.117
-	github.com/mattbaird/jsonpatch v0.0.0-20171005235357-81af80346b1a // indirect
+	github.com/peterbourgon/ff v1.7.0
 	github.com/spf13/pflag v1.0.5
 	github.com/tektoncd/pipeline v0.13.0
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d

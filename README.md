@@ -1,6 +1,6 @@
 # tekton-commit-status-tracker
 
-> Forked from https://github.com/digital-plumberes-union/tekton-tree/master/commit-status-tracker
+> Forked from https://github.com/tektoncd/experimental/tree/master/commit-status-tracker
 
 ## Overview
 

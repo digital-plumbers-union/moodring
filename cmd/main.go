@@ -25,22 +25,25 @@ import (
 	"github.com/spf13/pflag"
 	pipelinev1 "github.com/tektoncd/pipeline/pkg/apis/pipeline/v1alpha1"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
+	"sigs.k8s.io/controller-runtime/pkg/controller"
+	"sigs.k8s.io/controller-runtime/pkg/handler"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/manager/signals"
+	"sigs.k8s.io/controller-runtime/pkg/source"
 
-	"github.com/digital-plumbers-union/tekton-commit-status-tracker/pkg/controller"
+	pipelinerun "github.com/digital-plumbers-union/tekton-commit-status-tracker/pkg/controller/pipelinerun"
 	"github.com/digital-plumbers-union/tekton-commit-status-tracker/version"
 )
 
-// Change below variables to serve metrics on different host or port.
+// Controller configuration
 var (
-	metricsHost               = "0.0.0.0"
-	metricsPort         int32 = 8383
-	operatorMetricsPort int32 = 8686
-	port                      = 9443
-	namespace                 = os.Getenv("WATCH_NAMESPACE")
+	gitBaseURL  string
+	metricsHost string
+	metricsPort int
+	port        int
+	namespace   string
 )
 var log = logf.Log.WithName("cmd")
 
@@ -48,15 +51,19 @@ func printVersion() {
 	log.Info(fmt.Sprintf("Operator Version: %s", version.Version))
 	log.Info(fmt.Sprintf("Go Version: %s", runtime.Version()))
 	log.Info(fmt.Sprintf("Go OS/Arch: %s/%s", runtime.GOOS, runtime.GOARCH))
-	log.Info(fmt.Sprintf("Git Base URL: %s", os.Getenv("GIT_BASE_URL")))
 }
 
 func main() {
-	// Add flag for Git API Base URL
-	pflag.String("git-base-url", "", "base URL for git API to use")
+	pflag.StringVar(&gitBaseURL, "git-base-url", "https://api.github.com", "base URL for git API to use")
+	pflag.StringVar(&metricsHost, "metrics-host", "0.0.0.0", "address to serve metrics on")
+	pflag.IntVar(&metricsPort, "metrics-port", 8383, "port to serve metrics on")
+	pflag.IntVar(&port, "port", 9443, "port to serve looks on")
+	pflag.StringVar(&namespace, "watch-namespace", os.Getenv("WATCH_NAMESPACE"), "namespace to watch for pipeline runs")
+
 	// Add flags registered by imported packages (e.g. glog and
 	// controller-runtime)
 	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
+
 	pflag.Parse()
 
 	// Use a zap logr.Logger implementation. If none of the zap
@@ -72,11 +79,7 @@ func main() {
 	printVersion()
 
 	// Get a config to talk to the apiserver
-	cfg, err := config.GetConfig()
-	if err != nil {
-		log.Error(err, "Failed to get kubeconfig")
-		os.Exit(1)
-	}
+	cfg := config.GetConfigOrDie()
 
 	// Create a new Cmd to provide shared dependencies and start components
 	mgr, err := manager.New(cfg, manager.Options{
@@ -95,14 +98,23 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err := controller.AddToManager(mgr); err != nil {
-		log.Error(err, "Unable to register controller")
+	log.Info("Creating pipelinerun-controller")
+	c, err := controller.New("pipeline-controller", mgr, controller.Options{
+		Reconciler: pipelinerun.NewReconciler(mgr, gitBaseURL),
+	})
+	if err != nil {
+		log.Error(err, "Unable to create pipelinerun-controller")
+		os.Exit(1)
+	}
+
+	err = c.Watch(&source.Kind{Type: &pipelinev1.PipelineRun{}}, &handler.EnqueueRequestForObject{})
+	if err != nil {
+		log.Error(err, "Unable to set up watches for pipelinerun-controller")
 		os.Exit(1)
 	}
 
 	log.Info("Starting the Cmd.")
 	if err := mgr.Start(signals.SetupSignalHandler()); err != nil {
-		log.Error(err, "Manager exited non-zero")
-		os.Exit(1)
+		log.Error(err, "Manager failed to start")
 	}
 }
