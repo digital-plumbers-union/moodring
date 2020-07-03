@@ -16,6 +16,3 @@ test:ci --flaky_test_attempts=3
 # try to import the ci cache auth flags
 try-import .ci-cache-bazelrc
 
-# FLAGS FOR USING THE DEV CACHE
-# put credentials in .dev-cache-bazelrc which is .gitignored
-try-import .dev-cache-bazelrc

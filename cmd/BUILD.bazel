@@ -41,6 +41,6 @@ container_push(
     image = ":container",
     registry = "index.docker.io",
     repository = "dpush/moodring",
-    tag = "latest",
     stamp = False,
+    tag = "latest",
 )

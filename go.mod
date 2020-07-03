@@ -3,11 +3,12 @@ module github.com/digital-plumbers-union/tekton-commit-status-tracker
 go 1.13
 
 require (
+	github.com/bazelbuild/buildtools v0.0.0-20200623222341-ce0cf814cb03 // indirect
 	github.com/jenkins-x/go-scm v1.5.117
-	github.com/peterbourgon/ff v1.7.0
 	github.com/spf13/pflag v1.0.5
 	github.com/tektoncd/pipeline v0.13.0
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
+	golang.org/x/tools v0.0.0-20200702044944-0cc1aa72b347 // indirect
 	k8s.io/api v0.17.6
 	k8s.io/apimachinery v0.17.6
 	k8s.io/client-go v11.0.1-0.20190805182717-6502b5e7b1b5+incompatible

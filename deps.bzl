@@ -1398,8 +1398,8 @@ def go():
         build_file_generation = "on",
         build_file_proto_mode = "disable_global",
         importpath = "golang.org/x/tools",
-        sum = "h1:1KSbntBked74wYsKq0jzXYy7ZwcjAUtrl7EmPE97Iiw=",
-        version = "v0.0.0-20200329025819-fd4102a86c65",
+        sum = "h1:/e4fNMHdLn7SQSxTrRZTma2xjQW6ELdxcnpqMhpo9X4=",
+        version = "v0.0.0-20200702044944-0cc1aa72b347",
     )
     go_repository(
         name = "org_golang_x_xerrors",
@@ -1670,8 +1670,8 @@ def go():
         build_file_generation = "on",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/bazelbuild/buildtools",
-        sum = "h1:3B/ZE1a6eEJ/4Jf/M6RM2KBouN8yKCUcMmXzSyWqa3g=",
-        version = "v0.0.0-20190917191645-69366ca98f89",
+        sum = "h1:LRSVAUotW3P6B9fWl+r7qTBE7IUMKyn+YvtmSE1L5DM=",
+        version = "v0.0.0-20200623222341-ce0cf814cb03",
     )
     go_repository(
         name = "com_github_bgentry_speakeasy",
@@ -3550,8 +3550,8 @@ def go():
         build_file_generation = "on",
         build_file_proto_mode = "disable_global",
         importpath = "github.com/yuin/goldmark",
-        sum = "h1:isv+Q6HQAmmL2Ofcmg8QauBmDPlUUnSoNhEcC940Rds=",
-        version = "v1.1.25",
+        sum = "h1:nqDD4MMMQA0lmWq03Z2/myGPYLQoXtmi0rGVs95ntbo=",
+        version = "v1.1.27",
     )
     go_repository(
         name = "com_github_yvasiyarov_go_metrics",
@@ -4054,4 +4054,12 @@ def go():
         importpath = "helm.sh/helm/v3",
         sum = "h1:aykwPMVyQyncZ8iLNVMXgJ1l3c6W0+LSOPmqp8JdCjs=",
         version = "v3.1.1",
+    )
+    go_repository(
+        name = "com_github_peterbourgon_ff",
+        build_file_generation = "on",
+        build_file_proto_mode = "disable_global",
+        importpath = "github.com/peterbourgon/ff",
+        sum = "h1:hknvTgsh90jNBIjPq7xeq32Y9AmSbpXvjrFW4sJwW+A=",
+        version = "v1.7.0",
     )
