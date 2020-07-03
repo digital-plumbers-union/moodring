@@ -5,7 +5,7 @@ load("@io_bazel_rules_docker//container:container.bzl", "container_push")
 go_library(
     name = "go_default_library",
     srcs = ["main.go"],
-    importpath = "github.com/digital-plumbers-union/tekton-commit-status-tracker/cmd",
+    importpath = "github.com/digital-plumbers-union/moodring/cmd",
     visibility = ["//visibility:private"],
     deps = [
         "//pkg/controller/pipelinerun:go_default_library",

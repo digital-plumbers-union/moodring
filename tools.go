@@ -1,5 +1,3 @@
-// Copyright 2020 The Tekton Authors
-//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -17,3 +15,8 @@
 // Place any runtime dependencies as imports in this file.
 // Go modules will be forced to download and install them.
 package tools
+
+import (
+	_ "github.com/bazelbuild/buildtools/buildifier"
+	_ "golang.org/x/tools/cmd/goimports"
+)

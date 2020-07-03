@@ -12,7 +12,7 @@ go_library(
         "run_state.go",
         "secret.go",
     ],
-    importpath = "github.com/digital-plumbers-union/tekton-commit-status-tracker/pkg/controller/pipelinerun",
+    importpath = "github.com/digital-plumbers-union/moodring/pkg/controller/pipelinerun",
     visibility = ["//visibility:public"],
     deps = [
         "@com_github_jenkins_x_go_scm//scm:go_default_library",

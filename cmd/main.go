@@ -33,8 +33,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/manager/signals"
 	"sigs.k8s.io/controller-runtime/pkg/source"
 
-	pipelinerun "github.com/digital-plumbers-union/tekton-commit-status-tracker/pkg/controller/pipelinerun"
-	"github.com/digital-plumbers-union/tekton-commit-status-tracker/version"
+	pipelinerun "github.com/digital-plumbers-union/moodring/pkg/controller/pipelinerun"
+	"github.com/digital-plumbers-union/moodring/version"
 )
 
 // Controller configuration
