@@ -17,6 +17,6 @@ before_install:
   - rm -f install.sh
 
 script:
-  - bazel run //:bulidifier-check
+  - bazel run //:buildifier-check
   - bazel build --config=ci //...
   - bazel test --config=ci //...
