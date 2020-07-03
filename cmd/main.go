@@ -58,7 +58,7 @@ func main() {
 	pflag.StringVar(&metricsHost, "metrics-host", "0.0.0.0", "address to serve metrics on")
 	pflag.IntVar(&metricsPort, "metrics-port", 8383, "port to serve metrics on")
 	pflag.IntVar(&port, "port", 9443, "port to serve looks on")
-	pflag.StringVar(&namespace, "watch-namespace", "", "namespace to watch for pipeline runs")
+	pflag.StringVar(&namespace, "watch-namespace", os.Getenv("WATCH_NAMESPACE"), "namespace to watch for pipeline runs")
 
 	// Add flags registered by imported packages (e.g. glog and
 	// controller-runtime)

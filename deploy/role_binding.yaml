@@ -15,11 +15,11 @@
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: commit-status-tracker
+  name: moodring
 subjects:
 - kind: ServiceAccount
-  name: commit-status-tracker
+  name: moodring
 roleRef:
   kind: Role
-  name: commit-status-tracker
+  name: moodring
   apiGroup: rbac.authorization.k8s.io

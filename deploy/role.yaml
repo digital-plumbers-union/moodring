@@ -15,7 +15,7 @@
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: commit-status-tracker
+  name: moodring
 rules:
 - apiGroups:
   - ""
@@ -63,7 +63,7 @@ rules:
   resources:
   - deployments/finalizers
   resourceNames:
-  - commit-status-tracker
+  - moodring
   verbs:
   - "update"
 - apiGroups:
