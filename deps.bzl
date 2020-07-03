@@ -1236,7 +1236,7 @@ def go():
         # due to incorrect resolution of dependency, this arg tells rules_go
         # that we know this go_repository imports this and we satisfy the
         # dependency
-        build_extra_args = ["-known_import=github.com/googleapis/gnostic"],
+        build_extra_args = ["-known_import=github.com/googleapis/gnostic", "-known_import=testdata.kb.io/api"],
         build_file_generation = "on",
         build_file_proto_mode = "disable_global",
         importpath = "k8s.io/kube-openapi",
@@ -1245,6 +1245,11 @@ def go():
     )
     go_repository(
         name = "io_k8s_sigs_controller_runtime",
+        # incorrect capitalization import path is causing errors in CI
+        # due to incorrect resolution of dependency, this arg tells rules_go
+        # that we know this go_repository imports this and we satisfy the
+        # dependency
+        build_extra_args = ["-known_import=github.com/googleapis/gnostic", "-known_import=testdata.kb.io/api"],
         build_file_generation = "on",
         build_file_proto_mode = "disable_global",
         importpath = "sigs.k8s.io/controller-runtime",
