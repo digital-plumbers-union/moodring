@@ -1,5 +1,7 @@
 # tekton-commit-status-tracker
 
+[![Build Status](https://travis-ci.org/digital-plumbers-union/moodring.svg?branch=master)](https://travis-ci.org/digital-plumbers-union/moodring)
+
 > Forked from https://github.com/tektoncd/experimental/tree/master/commit-status-tracker
 
 ## Overview
