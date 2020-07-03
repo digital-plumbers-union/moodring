@@ -22,44 +22,21 @@ import (
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/controller"
-	"sigs.k8s.io/controller-runtime/pkg/handler"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
-	"sigs.k8s.io/controller-runtime/pkg/source"
 
 	pipelinev1 "github.com/tektoncd/pipeline/pkg/apis/pipeline/v1alpha1"
 )
 
 var log = logf.Log.WithName("controller_pipelinerun")
 
-// Add creates a new PipelineRun Controller and adds it to the Manager. The Manager will set fields on the Controller
-// and Start it when the Manager is Started.
-func Add(mgr manager.Manager) error {
-	return add(mgr, newReconciler(mgr))
-}
-
 // used as an in-memory store to track pending runs.
 type pipelineRunTracker map[string]State
 
-// newReconciler returns a new reconcile.Reconciler
-func newReconciler(mgr manager.Manager, gitBaseURL string) reconcile.Reconciler {
+// NewReconciler returns a new reconcile.Reconciler
+func NewReconciler(mgr manager.Manager, gitBaseURL string) reconcile.Reconciler {
 	return &ReconcilePipelineRun{client: mgr.GetClient(), scheme: mgr.GetScheme(), gitBaseURL: gitBaseURL, scmFactory: createClient, pipelineRuns: make(pipelineRunTracker)}
-}
-
-// add adds a new Controller to mgr with r as the reconcile.Reconciler
-func add(mgr manager.Manager, r reconcile.Reconciler) error {
-	c, err := controller.New("pipelinerun-controller", mgr, controller.Options{Reconciler: r})
-	if err != nil {
-		return err
-	}
-
-	err = c.Watch(&source.Kind{Type: &pipelinev1.PipelineRun{}}, &handler.EnqueueRequestForObject{})
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // ReconcilePipelineRun reconciles a PipelineRun object
@@ -134,7 +111,7 @@ func (r *ReconcilePipelineRun) Reconcile(request reconcile.Request) (reconcile.R
 		return reconcile.Result{}, nil
 	}
 
-	client := r.scmFactory(secret)
+	client := r.scmFactory(secret, r.gitBaseURL)
 	commitStatusInput := getCommitStatusInput(pipelineRun)
 	reqLogger.Info("creating a commit status for", "resource", res, "repo", repo, "sha", sha, "status", commitStatusInput)
 	_, _, err = client.Repositories.CreateStatus(ctx, repo, sha, commitStatusInput)

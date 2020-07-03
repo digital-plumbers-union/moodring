@@ -22,10 +22,9 @@ import (
 	"golang.org/x/oauth2"
 )
 
-type scmClientFactory func(string) *scm.Client
+type scmClientFactory func(string, string) *scm.Client
 
 func createClient(token string, baseURL string) *scm.Client {
-	// var client *scm.Client
 	// ignore error because it can only error when parsing graphql api
 	// which we dont do
 	client, _ := github.New(baseURL)
