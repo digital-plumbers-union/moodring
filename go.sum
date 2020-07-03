@@ -698,6 +698,7 @@ github.com/jenkins-x/go-scm v1.5.117 h1:D7d1sDWUU+xocCNLQVoYKpMjVKnQvsPva+hPzruc
 github.com/jenkins-x/go-scm v1.5.117/go.mod h1:PCT338UhP/pQ0IeEeMEf/hoLTYKcH7qjGEKd7jPkeYg=
 github.com/jenkins-x/go-scm v1.5.141 h1:sd0A41HYU6i9Kfl5/jH3ldgq4VkSiwuW5+KwvRxTONo=
 github.com/jenkins-x/go-scm v1.5.142 h1:C3Mu/Heb715Bbptelq7yjx8Ux51Q4slxjLLydE5ogkI=
+github.com/jenkins-x/go-scm v1.5.145 h1:pdr79m8qP1AFrKkiAihSPg6YCmzbMd/46nrCRQsv1Oc=
 github.com/jessevdk/go-flags v1.4.0/go.mod h1:4FA24M0QyGHXBuZZK/XkWh8h0e1EYbRYJSGM75WSRxI=
 github.com/jimstudt/http-authentication v0.0.0-20140401203705-3eca13d6893a/go.mod h1:wK6yTYYcgjHE1Z1QtXACPDjcFJyBskHEdagmnq3vsP8=
 github.com/jinzhu/gorm v0.0.0-20170316141641-572d0a0ab1eb/go.mod h1:Vla75njaFJ8clLU1W44h34PjIkijhjHIYnZxMqCdxqo=
